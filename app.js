@@ -65,13 +65,25 @@ const galleryItems = [
 ];
 
 
-const galleryList = document.querySelector(".js-gallery");
+const galleryList = document.querySelector('.js-gallery');
+const closeBtn = document.querySelector('.lightbox__button');
+const lightboxContainer = document.querySelector ('.js-lightbox');
+const lightboxPicture = document.querySelector ('.lightbox__content');
+
+
 console.log(galleryList);
+console.log(closeBtn);
+console.log(lightboxContainer);
+console.log(lightboxPicture);
+
+
 
 const makeImgList = ({preview, description, original}) => {
   
-  return `<li> <a class="gallery__link" href= '${original}'></a> <img src = '${preview}' alt = '${description}' width="391" height="240"></li>`
+  return `<li class="gallery__item"> <a class="gallery__link" href= '${original}'></a> <img src = '${preview}' alt = '${description}' width="391" height="240"></li>`
 };
+
+
 
 const elements = galleryItems.map(makeImgList);
 galleryList.insertAdjacentHTML("beforeend",
@@ -81,8 +93,20 @@ const listItem = document.querySelector('.js-gallery li');
 console.log(listItem);
 
 
+//---- открываем модалку ----
+listItem.addEventListener('click', onOpenModal);
 
-// const 
+function onOpenModal () {
+  lightboxContainer.classList.add("is-open");
+}
 
-// galleryList.addEventListener('click', )
+closeBtn.addEventListener('click', onCloseModal);
+
+function onCloseModal () {
+  lightboxContainer.classList.remove("is-open");
+}
+
+
+
+
 
