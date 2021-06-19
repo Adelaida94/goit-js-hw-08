@@ -63,3 +63,26 @@ const galleryItems = [
     description: 'Lighthouse Coast Sea',
   },
 ];
+
+
+const galleryList = document.querySelector(".js-gallery");
+console.log(galleryList);
+
+const makeImgList = ({preview, description, original}) => {
+  
+  return `<li> <a class="gallery__link" href= '${original}'></a> <img src = '${preview}' alt = '${description}' width="391" height="240"></li>`
+};
+
+const elements = galleryItems.map(makeImgList);
+galleryList.insertAdjacentHTML("beforeend",
+[...elements].join(''));
+
+const listItem = document.querySelector('.js-gallery li');
+console.log(listItem);
+
+
+
+// const 
+
+// galleryList.addEventListener('click', )
+
