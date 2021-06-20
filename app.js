@@ -64,47 +64,65 @@ const galleryItems = [
   },
 ];
 
-
 const galleryList = document.querySelector('.js-gallery');
 const closeBtn = document.querySelector('.lightbox__button');
 const lightboxContainer = document.querySelector ('.js-lightbox');
-const lightboxPicture = document.querySelector ('.lightbox__content');
-
+const lightboxPicture = document.querySelector ('.lightbox__image');
+const lightboxOverlay = document.querySelector ('.lightbox__overlay');
 
 console.log(galleryList);
 console.log(closeBtn);
 console.log(lightboxContainer);
 console.log(lightboxPicture);
 
+const cardsMarkup = createPicturesGallery(galleryItems);
+galleryList.insertAdjacentHTML("beforeend", cardsMarkup);
 
+function createPicturesGallery(galleryItems) {
+  return galleryItems
+    .map(({ preview, original, description }) => {
+      return `
+        <li class="gallery__item">
+        <a
+        class="gallery__link"
+        href="${original}"
+      >
+        <img
+          class="gallery__image"
+          src="${preview}"
+          data-source="${original}"
+          alt="${description}"
+        />
+      </a>
+    </li>`;
+    })
+    .join("");
+}
 
-const makeImgList = ({preview, description, original}) => {
-  
-  return `<li class="gallery__item"> <a class="gallery__link" href= '${original}'></a> <img src = '${preview}' alt = '${description}' width="391" height="240"></li>`
+//---- открываем модалку/закрываем ----
+galleryList.addEventListener('click', onOpenModal); 
+
+//---- функция открытия модалки
+function onOpenModal (evt) {
+ 
+  evt.preventDefault(); //---- предотвращаем переход по ссылке href
+  if (evt.target.nodeName !== "IMG") { //---- если клацнуть куда либо, кроме img, то модалка не появится
+    return;
+    } 
+  lightboxContainer.classList.add("is-open"); // ---- добавляем класс для открытия модалки
+  lightboxPicture.src = evt.target.dataset.source; // ---- ? подставляем ссылку на картинку в оригинальном размере в открытой модалке в соответствующую строку
+  closeBtn.addEventListener("click", onCloseModal); //---- вешаем слушателя на клик по кнопке на закрытие модалки внутри функции (иначе не сработает на всех картинках)
+  lightboxOverlay.addEventListener("click", onCloseModal) //---- вешаем слушателя на клик на оверлей и вызываем закрытие модалки
+};
+
+//---- функция закрытия модалки
+function onCloseModal () {
+  lightboxContainer.classList.remove("is-open"); //---- удаляем класс для закрытия модалки
+  lightboxPicture.src = ""; //---- убираем атрибуты открытой ранее в модалке картинки
+  // closeBtn.removeEventListener("click", onCloseModal); ???
 };
 
 
-
-const elements = galleryItems.map(makeImgList);
-galleryList.insertAdjacentHTML("beforeend",
-[...elements].join(''));
-
-const listItem = document.querySelector('.js-gallery li');
-console.log(listItem);
-
-
-//---- открываем модалку ----
-listItem.addEventListener('click', onOpenModal);
-
-function onOpenModal () {
-  lightboxContainer.classList.add("is-open");
-}
-
-closeBtn.addEventListener('click', onCloseModal);
-
-function onCloseModal () {
-  lightboxContainer.classList.remove("is-open");
-}
 
 
 
